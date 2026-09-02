@@ -59,7 +59,7 @@ st.subheader("Progress toward channel benchmarks")
 latest_ig = storage.get_latest_ig_snapshot()
 latest_substack = storage.get_latest_substack_snapshot()
 
-col1, col2, col3 = st.columns(3)
+col1, col2 = st.columns(2)
 
 with col1:
     st.markdown("**Instagram — 1,000 followers**")
@@ -79,10 +79,6 @@ with col2:
                    f"Latest: {latest_substack['total_subscribers']:,} subscribers")
     else:
         st.caption("No Substack snapshot yet — upload a CSV export on the Substack tab.")
-
-with col3:
-    st.markdown("**eBay — active listing health**")
-    st.caption("Wire in existing Browse API pull here (live, not snapshotted).")
 
 st.divider()
 
