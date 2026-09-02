@@ -1,5 +1,5 @@
 """
-app.py — Bytes on Disc / k_diesel_finds channel analytics dashboard.
+app.py — k_diesel_finds channel analytics dashboard.
 
 Layout: a benchmark-gauge summary at top, then per-channel tabs.
 - Instagram: live pull via Graph API, snapshotted locally (this file, working now)
@@ -12,6 +12,9 @@ Secrets needed (add via Streamlit's secrets.toml or the Cloud secrets UI):
     IG_ACCESS_TOKEN = "..."
     IG_USER_ID = "..."
 """
+
+from datetime import datetime
+from zoneinfo import ZoneInfo
 
 import streamlit as st
 import pandas as pd
@@ -27,10 +30,26 @@ from instagram_api import (
 # --- Benchmarks (adjust as targets change) ---
 IG_FOLLOWER_TARGET = 1000
 
-st.set_page_config(page_title="k_diesel_finds - Brand Dashboard", layout="wide")
+
+def to_central(ts_str: str) -> str:
+    """
+    Convert an Instagram timestamp (ISO 8601, UTC) to a readable Central time string.
+    Used for display only — the raw ISO string stays in the database so sorting
+    by timestamp isn't affected by the display timezone.
+    """
+    if not ts_str:
+        return ""
+    try:
+        dt = datetime.fromisoformat(ts_str.replace("Z", "+00:00"))
+        central_dt = dt.astimezone(ZoneInfo("America/Chicago"))
+        return central_dt.strftime("%Y-%m-%d %H:%M:%S %Z")
+    except ValueError:
+        return ts_str  # fall back to raw string if the format is unexpected
+
+st.set_page_config(page_title="k_diesel_finds - Brand Channel", layout="wide")
 storage.init_db()
 
-st.title("k_diesel_finds - Brand Dashboard")
+st.title("k_diesel_find — Brand Channel Dashboard")
 
 # ---------------------------------------------------------------------------
 # Benchmark summary row
@@ -132,6 +151,7 @@ with tab_ig:
     if media_rows:
         st.subheader("Recent post performance")
         media_df = pd.DataFrame([dict(row) for row in media_rows])
+        media_df["timestamp"] = media_df["timestamp"].apply(to_central)
         st.dataframe(
             media_df[["timestamp", "caption_preview", "media_type", "reach", "likes", "comments"]],
             use_container_width=True,
