@@ -27,10 +27,10 @@ from instagram_api import (
 # --- Benchmarks (adjust as targets change) ---
 IG_FOLLOWER_TARGET = 1000
 
-st.set_page_config(page_title="Bytes on Disc — Channel Dashboard", layout="wide")
+st.set_page_config(page_title="k_diesel_finds - Brand Dashboard", layout="wide")
 storage.init_db()
 
-st.title("Bytes on Disc — Channel Dashboard")
+st.title("k_diesel_finds - Brand Dashboard")
 
 # ---------------------------------------------------------------------------
 # Benchmark summary row
