@@ -89,7 +89,7 @@ st.divider()
 # ---------------------------------------------------------------------------
 # Tabs
 # ---------------------------------------------------------------------------
-tab_ig, tab_ebay, tab_substack = st.tabs(["Instagram", "eBay", "Substack"])
+tab_ig, tab_substack = st.tabs(["Instagram", "Substack"])
 
 with tab_ig:
     st.header("Instagram")
@@ -156,15 +156,6 @@ with tab_ig:
             media_df[["timestamp", "caption_preview", "media_type", "reach", "likes", "comments"]],
             use_container_width=True,
         )
-
-with tab_ebay:
-    st.header("eBay")
-    st.info(
-        "Not yet wired up. Pull this from the existing Browse API logic in "
-        "ebay_movie_insights_oop.py — active listings, views, watchers. "
-        "This tab should call the API live on each visit rather than snapshotting, "
-        "since eBay's data isn't retention-limited like Instagram's insights are."
-    )
 
 with tab_substack:
     st.header("Substack")
